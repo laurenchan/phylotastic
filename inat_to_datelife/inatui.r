@@ -1,10 +1,16 @@
+library(shiny)
 library(rinat)
 library(rphylotastic)
+library(deeptime)
+library(datelife)
+library(ggplot2)
+library(ggtree)
+library(ape)
 
-proj_dat <- get_inat_obs_project("pu-vert-zoo", type="info", raw=FALSE)
-proj_obs <- get_inat_obs_project(proj_dat$id, type="observations")
+proj_dat <- get_inat_obs_project(5062, type="observations", raw=FALSE)
+#proj_obs <- get_inat_obs_project(proj_dat$id, type="observations")
 
-spp_list <- unique(proj_obs$Scientific.name)
+spp_list <- unique(proj_dat$Scientific.name)
 
 dltree <- datelife_search(input=spp_list, summary_format="phylo_median")
 #pttree <- taxa_get_otol_tree(spp_list)
