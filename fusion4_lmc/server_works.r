@@ -20,20 +20,19 @@ function(input, output, session) {
       updateSelectInput(session, "clade", choices = c("", unique(spp_table()[,2])))
     })
     
-    dltree <- eventReactive(input$phyloButton, {
+    spp_list <- eventReactive(input$phyloButton, {
       if (!input$clade == ""){
         spp_to_plot <- spp_table()[spp_table()[,2]==input$clade,1]
       } else{
         spp_to_plot <- spp_table[,1]
       }
- #     spp_to_plot
-      datelife_search(input=spp_to_plot, summary_format="phylo_median") #, get_spp_from_taxon = TRUE)
+      spp_to_plot
     })
 
   
-#   dltree <- eventReactive(input$phyloButton,{
-#     datelife_search(input=spp_list(), summary_format="phylo_median") #, get_spp_from_taxon = TRUE)
-#   })
+   dltree <- eventReactive(input$phyloButton,{
+     datelife_search(input=spp_list(), summary_format="phylo_median") #, get_spp_from_taxon = TRUE)
+   })
    
    observe({
       updateSelectInput(session, "taxon", choices = c(gsub("_", " ", dltree()$tip.label)))

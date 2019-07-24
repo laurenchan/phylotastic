@@ -10,9 +10,10 @@ fluidPage(
         selected = 1),
 
     textInput('projectID', 'Project or User ID', "pu-vert-zoo"),
-#    numericInput('rec_limit', "Maximum Records", 100, min=1, max=1000),
     actionButton("goButton", "Get iNaturalist Records!"),
+    
     br (), br(),
+    
     selectInput("clade", "Choose clade for phylogeny", ""),
     actionButton("phyloButton", "Plot the Tree!"),
 
@@ -29,6 +30,7 @@ fluidPage(
 
   
   mainPanel(
+#    print('inattext'),
     plotOutput('tree'),
     shinycustomloader::withLoader(plotOutput('gbif_map'), type = "html", loader = "pacman")
   )
