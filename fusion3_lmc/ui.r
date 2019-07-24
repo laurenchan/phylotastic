@@ -1,6 +1,6 @@
 # Lauren is messing with different options.
 
-pageWithSidebar(
+fluidPage(
   headerPanel('iNaturalist Tree'),
   sidebarPanel(
     # 3605 is the id for the calbats project
@@ -13,11 +13,16 @@ pageWithSidebar(
     actionButton("goButton", "Go!"),
 
     selectInput("taxon", "Choose a taxon to map:", choices = ""),
-    actionButton("taxonButton", "Map!")
+    actionButton("taxonButton", "Map!"),
  
-#    textAreaInput('taxa', "Taxa (comma delimited; spaces or underscores in binomials are ok) or a Tree (Newick format; make sure to end with a semicolon)",
-#                 "Rhea americana, Pterocnemia pennata, Struthio camelus", width = 200, height = "auto")),
+    
+    sliderInput("latitude", "Latitude",
+                min = -90, max = 90, value = c(-40,40)),    
+    sliderInput("longitude", "Longitude",
+                min = -180, max = 180, value = c(-100, 100))    
   ),
+
+  
   mainPanel(
     plotOutput('tree'),
     shinycustomloader::withLoader(plotOutput('gbif_map'), type = "html", loader = "pacman")
