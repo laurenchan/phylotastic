@@ -2,24 +2,39 @@ function(input, output, session) {
   observe({
       updateSelectInput(session, "user_or_proj",) 
   })
-   dltree <- eventReactive(input$goButton, {
-    # project_info <- get_inat_obs_project(grpid = "calbats", type = "info", raw = F)
-    # project_info$title can be used as title for the chronogram or the whole main panel
-    # project_info$description can be displayed when hovering over the project name or shown at the top.
+   spp_table <- eventReactive(input$goButton, {
+     print("inat button")
     if (input$user_or_proj == "1"){
         proj_dat <- get_inat_obs_project(input$projectID, type="observations", raw=FALSE)
-        spp_list <- unique(proj_dat$Scientific.name, nmax=input$rec_limit)
-    }
-     else{
-       user_dat <- get_inat_obs_user(input$projectID)
-       spp_list <- levels(unique(user_dat$scientific_name), nmax=input$rec_limit)
+ #       spp_to_plot <- unique(proj_dat$Scientific.name, nmax=input$rec_limit)
+        sub_table<-cbind(proj_dat$Scientific.name, proj_dat$Iconic.taxon.name)
+    }else{
+        user_dat <- get_inat_obs_user(input$projectID)
+#       spp_to_plot <- levels(unique(user_dat$scientific_name), nmax=input$rec_limit)
+        sub_table<-cbind(as.character(user_dat$scientific_name), as.character(user_dat$iconic_taxon_name))
      }
-
-    # code to make list: write(paste(spp_list, collapse = '", "'), file="5062spp_list.txt")
-    datelife_search(input=spp_list, summary_format="phylo_median") #, get_spp_from_taxon = TRUE)
-  })
-  
+    print("iNaturalist Records Pulled")
+    sub_table
+})
     observe({
+      updateSelectInput(session, "clade", choices = c("", unique(sub_table[,2])))
+    })
+    
+    spp_list <- reactive({
+      if (!input$clade == ""){
+        spp_to_plot <- spp_table()[spp_table()[,2]==input$clade,1]
+      } else{
+        spp_to_plot <- spp_list[,1]
+      }
+      spp_to_plot
+    })
+
+  
+   dltree <- eventReactive(input$phyloButton,{
+     datelife_search(input=spp_list(), summary_format="phylo_median") #, get_spp_from_taxon = TRUE)
+   })
+   
+   observe({
       updateSelectInput(session, "taxon", choices = c(gsub("_", " ", dltree()$tip.label)))
       })
     dltree_height <- reactive({
@@ -37,8 +52,7 @@ function(input, output, session) {
   })
   output$gbif_map <- renderPlot({
     wm <- borders("world", colour="gray50", fill="gray50")
-    ggplot() + #coord_fixed() + 
-      wm + 
+    ggplot() + wm + 
       geom_point(data = dat(), aes(x = decimalLongitude, y = decimalLatitude), colour = "darkred", size = 0.5) +
 # coord_fixed adjusts zoom. clunky but works. 
      coord_fixed(xlim = input$longitude, ylim = input$latitude, expand = FALSE) +
