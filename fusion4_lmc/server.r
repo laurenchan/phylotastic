@@ -9,11 +9,11 @@ function(input, output, session) {
     if (input$user_or_proj == "1"){
       print("user!")
         proj_dat <- get_inat_obs_project(input$projectID, type="observations", raw=FALSE)
-        spp_list <- unique(proj_dat$Scientific.name)
+        spp_list <- unique(proj_dat$Scientific.name, nmax=input$rec_limit)
     }
      else{
        user_dat <- get_inat_obs_user(input$projectID)
-       spp_list <- levels(unique(user_dat$scientific_name))
+       spp_list <- levels(unique(user_dat$scientific_name), nmax=input$rec_limit)
      }
 
     # code to make list: write(paste(spp_list, collapse = '", "'), file="5062spp_list.txt")
