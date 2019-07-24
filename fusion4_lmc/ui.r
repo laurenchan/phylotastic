@@ -2,14 +2,14 @@
 
 fluidPage(
   headerPanel('iNaturalist Tree'),
-  sidebarPanel(
+  sidebarPanel(width=3,
     # 3605 is the id for the calbats project
     radioButtons("user_or_proj", "Search by:", inline=TRUE,
         choices = list("Project" = 1, 
                    "User" = 2),
         selected = 1),
 
-    textInput('projectID', 'Project or User ID', "pu-vert-zoo"),
+    textInput('projectID', 'Project or User ID', "calbats"),
     actionButton("goButton", "Get iNaturalist Records!"),
     
     br (), br(),
@@ -31,7 +31,7 @@ fluidPage(
   
   mainPanel(
 #    print('inattext'),
-    plotOutput('tree'),
+    shinycustomloader::withLoader(plotOutput('tree'), type = "html", loader = "dnaspin"),
     shinycustomloader::withLoader(plotOutput('gbif_map'), type = "html", loader = "pacman")
   )
 )
