@@ -7,6 +7,7 @@ pageWithSidebar(
     # 3605 is the id for the calbats project
     numericInput('projectID', 'Project ID', 5062),
     actionButton("goButton", "Go!"),
+
     selectInput("taxon", "Choose a taxon to map:", choices = ""),
     actionButton("taxonButton", "Go!")
  
