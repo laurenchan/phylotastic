@@ -9,8 +9,10 @@ fluidPage(
                    "User" = 2),
         selected = 1),
 
-    textInput('projectID', 'User or Project ID', "pu-vert-zoo"),
+    textInput('projectID', 'Project or User ID', "pu-vert-zoo"),
     actionButton("goButton", "Go!"),
+    
+    
 
     selectInput("taxon", "Choose a taxon to map:", choices = ""),
     actionButton("taxonButton", "Map!"),
