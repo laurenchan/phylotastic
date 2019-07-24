@@ -18,11 +18,11 @@ fluidPage(
     selectInput("taxon", "Choose a taxon to map:", choices = ""),
     actionButton("taxonButton", "Map!"),
  
-    
+# Sliders for zooming map    
     sliderInput("latitude", "Latitude",
-                min = -90, max = 90, value = c(-40,40)),    
+                min = -90, max = 90, value = c(-90,90)),    
     sliderInput("longitude", "Longitude",
-                min = -180, max = 180, value = c(-100, 100))    
+                min = -180, max = 180, value = c(-180, 180))    
   ),
 
   

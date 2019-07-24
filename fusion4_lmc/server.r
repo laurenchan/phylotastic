@@ -7,7 +7,6 @@ function(input, output, session) {
     # project_info$title can be used as title for the chronogram or the whole main panel
     # project_info$description can be displayed when hovering over the project name or shown at the top.
     if (input$user_or_proj == "1"){
-      print("user!")
         proj_dat <- get_inat_obs_project(input$projectID, type="observations", raw=FALSE)
         spp_list <- unique(proj_dat$Scientific.name, nmax=input$rec_limit)
     }
@@ -38,8 +37,11 @@ function(input, output, session) {
   })
   output$gbif_map <- renderPlot({
     wm <- borders("world", colour="gray50", fill="gray50")
-    ggplot() + coord_fixed() + wm + 
+    ggplot() + #coord_fixed() + 
+      wm + 
       geom_point(data = dat(), aes(x = decimalLongitude, y = decimalLatitude), colour = "darkred", size = 0.5) +
+# coord_fixed adjusts zoom. clunky but works. 
+     coord_fixed(xlim = input$longitude, ylim = input$latitude, expand = FALSE) +
       theme_bw()
   })
 }
