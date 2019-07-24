@@ -1,15 +1,19 @@
+# Lauren is messing with different options.
+
 pageWithSidebar(
   headerPanel('iNaturalist Tree'),
   sidebarPanel(
-#    selectInput('xcol', 'X Variable', names(iris)),
-#    selectInput('ycol', 'Y Variable', names(iris),
-#                selected=names(iris)[[2]]),
     # 3605 is the id for the calbats project
-    numericInput('projectID', 'Project ID', 5062),
+    radioButtons("user_or_proj", "Search by:", inline=TRUE,
+        choices = list("Project" = 1, 
+                   "User" = 2),
+        selected = 1),
+
+    textInput('projectID', 'User or Project ID', "pu-vert-zoo"),
     actionButton("goButton", "Go!"),
 
     selectInput("taxon", "Choose a taxon to map:", choices = ""),
-    actionButton("taxonButton", "Go!")
+    actionButton("taxonButton", "Map!")
  
 #    textAreaInput('taxa', "Taxa (comma delimited; spaces or underscores in binomials are ok) or a Tree (Newick format; make sure to end with a semicolon)",
 #                 "Rhea americana, Pterocnemia pennata, Struthio camelus", width = 200, height = "auto")),

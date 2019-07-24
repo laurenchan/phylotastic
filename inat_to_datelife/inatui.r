@@ -14,7 +14,7 @@ proj_dat <- get_inat_obs_project(5062, type="observations", raw=FALSE)
 
 spp_list <- unique(proj_dat$Scientific.name)
 
-dltree <- datelife_search(input=spp_list, summary_format="phylo_median")
+dltree <- datelife_search(input=spp_list, summary_format="phylo_median", get_spp_from_taxon = TRUE)
 #pttree <- taxa_get_otol_tree(spp_list)
 
 
