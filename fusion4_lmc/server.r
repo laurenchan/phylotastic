@@ -22,9 +22,9 @@ function(input, output, session) {
     
     dltree <- eventReactive(input$phyloButton, {
       if (!input$clade == ""){
-        spp_to_plot <- spp_table()[spp_table()[,2]==input$clade,1]
+        spp_to_plot <- unique(spp_table()[spp_table()[,2]==input$clade,1])
       } else{
-        spp_to_plot <- spp_table[,1]
+        spp_to_plot <- unique(spp_table[,1])
       }
  #     spp_to_plot
       datelife_search(input=spp_to_plot, summary_format="phylo_median") #, get_spp_from_taxon = TRUE)
