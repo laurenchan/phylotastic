@@ -1,4 +1,5 @@
 # Lauren is messing with different options.
+# Too many options
 
 fluidPage(
   headerPanel('iNaturalist Tree'),

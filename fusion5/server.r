@@ -1,7 +1,9 @@
+# version 5. Lauren playing with.
+
 function(input, output, session) {
 
 # Pull species list with taxonomy 
-   spp_table <- eventReactive(input$goButton, {
+   taxon_table <- eventReactive(input$goButton, {
     if (input$user_or_proj == "1"){
         proj_dat <- get_inat_obs_project(input$projectID, type="observations", raw=FALSE)
  #       spp_to_plot <- unique(proj_dat$Scientific.name, nmax=input$rec_limit)
