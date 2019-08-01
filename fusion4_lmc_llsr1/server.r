@@ -1,12 +1,14 @@
 function(input, output, session) {
 
 # Pull species list and taxonomy, construct tree with datelife, and store spp taxonomy in tree as $tax
-   dl_tree <- eventReactive(input$goButton, {
+   whole_tree <- eventReactive(input$goButton, {
     if (input$user_or_proj == "1"){
         project_name <- tolower(gsub(" ", "-", input$projectID))
         proj_dat <- get_inat_obs_project(project_name, type="observations", raw=FALSE)
  #       spp_to_plot <- unique(proj_dat$Scientific.name, nmax=input$rec_limit)
         sub_table <- cbind(proj_dat$Scientific.name, proj_dat$Iconic.taxon.name)
+        # inaturalist taxonomy assignation has errors sometimes (e.g., putting bananas in reptiles bc that was the original id suggested by contributor)
+        # would be nice to draw taxonomy from ott or wikipedia
     } else {
         user_dat <- get_inat_obs_user(input$projectID)
 #       spp_to_plot <- levels(unique(user_dat$scientific_name), nmax=input$rec_limit)
@@ -23,22 +25,18 @@ function(input, output, session) {
     observe({
       updateSelectInput(session, "clade_tree", choices = c("", unique(tree$tax)))
     })
-    # eventReactive(input$phyloButton, {
-    #   if (input$clade_tree != ""){
-    #     tree <- ape::drop.tip(dl_tree(), tip = dl_tree()$tip.label[input$clade_tree %in% dl_tree()$tip.label])
-    #   }
-    # })
     # print(tree)
     tree$tip.label <- gsub("_", " ", tree$tip.label)
     tree
   })
-   
-    eventReactive(input$phyloButton, {
+    dl_tree <- reactive({
       if (input$clade_tree != ""){
-        tree <- ape::drop.tip(dl_tree(), tip = dl_tree()$tip.label[input$clade_tree %in% dl_tree()$tip.label])
+        tree <- ape::drop.tip(whole_tree(), tip = whole_tree()$tip.label[!whole_tree()$tax %in% input$clade_tree])
+      } else {
+        tree <- whole_tree()
       }
+      tree
     })
-
    
    observe({
       updateSelectInput(session, "taxon_map", choices = c(gsub("_", " ", dl_tree()$tip.label)))
