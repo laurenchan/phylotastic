@@ -1,0 +1,10 @@
+name: inaturalist_project_viewer
+title:
+username:
+account: laurenchan
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1063819
+bundleId: 2284816
+url: https://laurenchan.shinyapps.io/inaturalist_project_viewer/
+when: 1564699286.85552
